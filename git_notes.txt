@@ -1,0 +1,36 @@
+What is Git
+
+It is a version-control system/central repo that which allows you to manage documents/code and websites 
+
+Advantages
+
+  We can maintain branch specific code
+  Can differentiate between old code (vs) new code
+  Working code only add to the main branch
+
+Git Architecture 
+
+     (i) Working  Directory : This is the default git hub repo directory, where we need to make the code changes
+
+     (ii) Staging Area : This is area where all the code final changes are staged and ready to push 
+
+    (iii) Local Repository : It is repo where the changes are added to your local system first.
+
+     (iv) Remote Repository : This is area where the changes are added then remote users can access these code. 
+
+https://github.com/prasannatrainer80/Jbcs-a
+
+
+Git Commands 
+
+https://github.com/prasannatrainer80/JbTrg
+
+To download files from repository, 
+
+use the command 
+
+git clone 
+
+
+git clone https://github.com/prasannatrainer80/Jbcs-a
+
