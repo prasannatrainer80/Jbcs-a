@@ -34,3 +34,19 @@ git clone
 
 git clone https://github.com/prasannatrainer80/Jbcs-a
 
+1) Working Directory (Move to working directory)
+
+2) To stage the files into staging area (give command as)
+
+git add .
+
+3) To add the files to local repo
+
+git commit -m "my first commit"
+
+4) Add the files to remove repo
+
+git push origin main
+
+5) git diff : Used to find diff. between old commit/working directory
+
