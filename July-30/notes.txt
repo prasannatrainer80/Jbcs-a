@@ -1,0 +1,58 @@
+def show(x):
+  ...
+
+show();
+show(12);
+show(12,55);
+
+If you want to pass args from 0 to n, then we need to use varargs concept as method param prefixed with *
+
+def show(x*):
+  ...
+
+then show method can take from 0 to n args 
+
+
+https://github.com/prasannatrainer80/JbAIPython
+
+lambda expressions used to define and write clear and concise code, which is readable 
+
+you can define lambda expression, by using lambda keyword
+
+show = lambda :print("Hello All")
+
+Then show method contains code as "Hello All"
+
+sum = lambda a, b : return a + b
+then sum method contains code as a + b
+
+NumPy (Numerical Python) is library used for 
+
+	-> Fast Mathematical Calculations
+	-> Working with arrays
+	-> Linear Algebra
+	-> Statistics
+	-> Machine Learning and AI
+
+To start with NumPy we need to write the below code as
+
+import numpy as np
+
+def __init__() : used for initialziatio as acts as constrctor
+
+def __str__() : Acts as toString() method, as this code printed automatically, once you print the object
+
+names=["Jonah","Gopi","Venkat","Anitha","Nithin","Nikhil","Abhinay",
+"Anitha","Saba","Sana","Sowmya","Deepthi"]
+
+Print Below Values
+
+-> Print total names
+
+-> Print all names whose name starts with 'S'
+
+-> Print all names whose name contains 4 chars
+
+-> Print all names whose name ends with 'A'
+
+-> Print all names whose name contains char 'n'
