@@ -1,0 +1,10 @@
+Inheritance : The concept of deriving a new class from already existing class known as inheritance, the class which derived known as derived class, the class from which its derived known as base class. Through inheritance we can reduce the size of the program. 
+
+syntax : 
+
+class First:
+   ...
+
+class Second(First):
+  ...
+
