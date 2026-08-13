@@ -1,0 +1,214 @@
+#Employ.py
+class Employ:
+
+    def __init__(self, empno, name, dept, desig, basic):
+        self.empno = empno
+        self.name = name
+        self.dept = dept
+        self.desig = desig
+        self.basic = basic
+
+    def __str__(self):
+        return f"{self.empno}\t{self.name}\t{self.dept}\t{self.desig}\t{self.basic}"
+
+________________________________________________________
+
+# EmployDAO.py
+
+from Employ import Employ
+
+
+class EmployDAO:
+
+    # List as Collection
+    employees = []
+
+    # 1. Add Employee
+    @classmethod
+    def add_employee(cls, emp):
+
+        # Check duplicate Employee No
+        for e in cls.employees:
+            if e.empno == emp.empno:
+                return False
+
+        cls.employees.append(emp)
+        return True
+
+    # 2. Search Employee
+    @classmethod
+    def search_employee(cls, empno):
+
+        for emp in cls.employees:
+            if emp.empno == empno:
+                return emp
+
+        return None
+
+    # 3. Update Employee
+    @classmethod
+    def update_employee(cls, empno, name, dept, desig, basic):
+
+        emp = cls.search_employee(empno)
+
+        if emp is not None:
+            emp.name = name
+            emp.dept = dept
+            emp.desig = desig
+            emp.basic = basic
+            return True
+
+        return False
+
+    # 4. Delete Employee
+    @classmethod
+    def delete_employee(cls, empno):
+
+        emp = cls.search_employee(empno)
+
+        if emp is not None:
+            cls.employees.remove(emp)
+            return True
+
+        return False
+
+    # 5. Show Employees
+    @classmethod
+    def show_employees(cls):
+
+        return cls.employees
+___________________________________________________________________
+
+# Main.py
+
+from Employ import Employ
+from EmployDAO import EmployDAO
+
+
+def add_employee():
+
+    empno = int(input("Enter Employee No: "))
+    name = input("Enter Employee Name: ")
+    dept = input("Enter Department: ")
+    desig = input("Enter Designation: ")
+    basic = float(input("Enter Basic Salary: "))
+
+    emp = Employ(empno, name, dept, desig, basic)
+
+    result = EmployDAO.add_employee(emp)
+
+    if result:
+        print("Employee added successfully!")
+    else:
+        print("Employee already exists!")
+
+
+def search_employee():
+
+    empno = int(input("Enter Employee No: "))
+
+    emp = EmployDAO.search_employee(empno)
+
+    if emp is not None:
+        print("\nEmployee Found")
+        print("-" * 60)
+        print("EmpNo\tName\tDept\tDesignation\tBasic")
+        print("-" * 60)
+        print(emp)
+    else:
+        print("Employee not found!")
+
+
+def update_employee():
+
+    empno = int(input("Enter Employee No to Update: "))
+
+    emp = EmployDAO.search_employee(empno)
+
+    if emp is not None:
+
+        name = input("Enter New Name: ")
+        dept = input("Enter New Department: ")
+        desig = input("Enter New Designation: ")
+        basic = float(input("Enter New Basic Salary: "))
+
+        result = EmployDAO.update_employee(
+            empno, name, dept, desig, basic
+        )
+
+        if result:
+            print("Employee updated successfully!")
+
+    else:
+        print("Employee not found!")
+
+
+def delete_employee():
+
+    empno = int(input("Enter Employee No to Delete: "))
+
+    result = EmployDAO.delete_employee(empno)
+
+    if result:
+        print("Employee deleted successfully!")
+    else:
+        print("Employee not found!")
+
+
+def show_employees():
+
+    employees = EmployDAO.show_employees()
+
+    if len(employees) == 0:
+        print("No employees available!")
+        return
+
+    print("\nEmployee Details")
+    print("-" * 70)
+    print("EmpNo\tName\tDept\tDesignation\tBasic")
+    print("-" * 70)
+
+    for emp in employees:
+        print(emp)
+
+    print("-" * 70)
+
+
+# Main Menu
+while True:
+
+    print("\n========== EMPLOYEE MANAGEMENT ==========")
+    print("1. Add Employee")
+    print("2. Search Employee")
+    print("3. Update Employee")
+    print("4. Delete Employee")
+    print("5. Show Employee")
+    print("6. Exit")
+    print("=========================================")
+
+    choice = int(input("Enter your choice: "))
+
+    # Switch Case
+    match choice:
+
+        case 1:
+            add_employee()
+
+        case 2:
+            search_employee()
+
+        case 3:
+            update_employee()
+
+        case 4:
+            delete_employee()
+
+        case 5:
+            show_employees()
+
+        case 6:
+            print("Thank you!")
+            break
+
+        case _:
+            print("Invalid choice!")
