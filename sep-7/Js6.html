@@ -3,20 +3,20 @@
         <script>
             function show() {
                 var result = "";
-                if (frmAttendance.chkNarayana.checked == true) {
-                    result += "Narayana is Present...<br/>".fontcolor("green");
+                if (frmAttendance.chkNikhil.checked == true) {
+                    result += "Nikhil is Present...<br/>".fontcolor("green");
                 } else {
-                    result += "Narayana is Absent...<br/>".fontcolor("red");
+                    result += "Nikhil is Absent...<br/>".fontcolor("red");
                 }
-                if (frmAttendance.chkAnusha.checked == true){
-                    result += "Anusha is Present...<br/>".fontcolor("green");
+                if (frmAttendance.chkSrisha.checked == true){
+                    result += "Srisha is Present...<br/>".fontcolor("green");
                 } else {
-                    result += "Anusha is Absent...<br/>".fontcolor("red");
+                    result += "Srisha is Absent...<br/>".fontcolor("red");
                 }
-                if (frmAttendance.chkUday.checked == true) {
-                    result += "Uday is Present...<br/>".fontcolor("green");
+                if (frmAttendance.chkNithin.checked == true) {
+                    result += "Nithin is Present...<br/>".fontcolor("green");
                 } else {
-                    result += "Uday is Absent...<br/>".fontcolor("red");
+                    result += "Nithin is Absent...<br/>".fontcolor("red");
                 }
                 document.getElementById("attendance").innerHTML = result;
             }
@@ -25,12 +25,12 @@
 <body>
     <form name="frmAttendance">
         <center>
-            Narayana : 
-            <input type="checkbox" name="chkNarayana" onchange="show()" /> <br/><br/>
-            Anusha : 
-            <input type="checkbox" name="chkAnusha" onchange="show()" /> <br/><br/>
+            Nithin : 
+            <input type="checkbox" name="chkNikhil" onchange="show()" /> <br/><br/>
+            Srisha : 
+            <input type="checkbox" name="chkSrisha" onchange="show()" /> <br/><br/>
             Uday : 
-            <input type="checkbox" name="chkUday" onchange="show()" /> <br/><br/>
+            <input type="checkbox" name="chkNithin" onchange="show()" /> <br/><br/>
             <hr/>
             <span id="attendance"></span>
         </center>
