@@ -1,0 +1,64 @@
+ORM - Object Relational Mapping
+
+In python we can use this concept, that which ensures to connect python classes to backend tables. 
+
+To work with ORM, we need to use 2 basic libraries as
+
+PyMysql
+SqlAlchemy
+
+What is SQLAlchemy?
+
+SQLAlchemy is referred to as the toolkit of Python SQL that provides developers with the flexibility of using the SQL database. The benefit of using this particular library is that allows Python developers to work with the language’s own objects, and not write separate SQL queries. They can basically use Python to access and work with databases.
+
+SQLAlchemy ORM is a useful tool for simplifying database interactions by mapping tables to Python classes. This guide covers essential tasks like declaring mappings, creating sessions, adding objects, and executing queries. It also delves into advanced topics such as joins, cascading deletes, and handling many-to-many relationships.
+
+In python project add the below libraries to project 
+
+sqlalchemy
+pymysql
+
+from database import Base
+
+
+class Student(Base):
+ 
+This ensures that Student class directly interact with Base, as Base directly targets database.py where the connection string informtion is there 
+
+This is the simple way to bind the data. 
+
+__tablename__ = "student"
+
+the above one is key property as student.py front end class needs to interact with student table.
+
+If table name is diff. change in this property
+
+  student_id = Column(
+        Integer,
+        primary_key=True
+    )
+
+This above code ensures student_id is primary key. 
+
+Same way define the remaining fields also. 
+
+  name = Column(
+        String(50),
+        nullable=False
+    )
+
+    gender = Column(
+        String(10)
+    )
+
+    course = Column(
+        String(50)
+    )
+
+    email = Column(
+        String(100)
+    )
+
+    phone = Column(
+        String(15)
+    )
