@@ -1,0 +1,232 @@
+Here is a practical Python ORM + JSON + Security example using Flask + SQLAlchemy + JWT. It demonstrates how to securely expose database records through a JSON REST API.
+
+1. Install packages
+pip install flask flask-sqlalchemy flask-jwt-extended werkzeug pymysql
+2. MySQL database
+CREATE DATABASE companydb;
+
+USE companydb;
+
+CREATE TABLE employees (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(30) DEFAULT 'USER'
+);
+3. Python ORM + JSON + JWT Security
+from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import (
+    JWTManager,
+    create_access_token,
+    jwt_required,
+    get_jwt
+)
+from werkzeug.security import generate_password_hash, check_password_hash
+
+app = Flask(__name__)
+
+# MySQL connection
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    "mysql+pymysql://root:password@localhost/companydb"
+)
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# JWT secret
+app.config["JWT_SECRET_KEY"] = "my-super-secret-key"
+
+db = SQLAlchemy(app)
+jwt = JWTManager(app)
+
+
+# -------------------------
+# ORM Model
+# -------------------------
+class Employee(db.Model):
+
+    __tablename__ = "employees"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    role = db.Column(db.String(30), default="USER")
+
+
+# -------------------------
+# Register
+# -------------------------
+@app.route("/register", methods=["POST"])
+def register():
+
+    data = request.get_json()
+
+    name = data.get("name")
+    email = data.get("email")
+    password = data.get("password")
+
+    if not name or not email or not password:
+        return jsonify({
+            "message": "Name, email and password are required"
+        }), 400
+
+    existing = Employee.query.filter_by(email=email).first()
+
+    if existing:
+        return jsonify({
+            "message": "Email already exists"
+        }), 409
+
+    employee = Employee(
+        name=name,
+        email=email,
+        password=generate_password_hash(password),
+        role="USER"
+    )
+
+    db.session.add(employee)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Employee registered successfully"
+    }), 201
+
+
+# -------------------------
+# Login
+# -------------------------
+@app.route("/login", methods=["POST"])
+def login():
+
+    data = request.get_json()
+
+    email = data.get("email")
+    password = data.get("password")
+
+    employee = Employee.query.filter_by(email=email).first()
+
+    if not employee:
+        return jsonify({
+            "message": "Invalid credentials"
+        }), 401
+
+    if not check_password_hash(employee.password, password):
+        return jsonify({
+            "message": "Invalid credentials"
+        }), 401
+
+    token = create_access_token(
+        identity=str(employee.id),
+        additional_claims={
+            "role": employee.role
+        }
+    )
+
+    return jsonify({
+        "access_token": token
+    })
+
+
+# -------------------------
+# Get Employees
+# -------------------------
+@app.route("/employees", methods=["GET"])
+@jwt_required()
+def get_employees():
+
+    employees = Employee.query.all()
+
+    result = []
+
+    for emp in employees:
+
+        result.append({
+            "id": emp.id,
+            "name": emp.name,
+            "email": emp.email,
+            "role": emp.role
+        })
+
+    return jsonify(result)
+
+
+# -------------------------
+# Admin Only API
+# -------------------------
+@app.route("/admin", methods=["GET"])
+@jwt_required()
+def admin():
+
+    claims = get_jwt()
+
+    if claims.get("role") != "ADMIN":
+        return jsonify({
+            "message": "Access denied"
+        }), 403
+
+    return jsonify({
+        "message": "Welcome Admin"
+    })
+
+
+# -------------------------
+# Run
+# -------------------------
+if __name__ == "__main__":
+
+    with app.app_context():
+        db.create_all()
+
+    app.run(debug=True)
+4. JSON request examples
+
+Register
+
+{
+    "name": "Prasanna",
+    "email": "prasanna@gmail.com",
+    "password": "MyPassword123"
+}
+
+Login
+
+{
+    "email": "prasanna@gmail.com",
+    "password": "MyPassword123"
+}
+
+Response:
+
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIs..."
+}
+
+Then call:
+
+GET /employees
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+
+Response:
+
+[
+    {
+        "id": 1,
+        "name": "Prasanna",
+        "email": "prasanna@gmail.com",
+        "role": "USER"
+    }
+]
+Security concepts demonstrated
+Security feature	Implementation
+ORM	SQLAlchemy
+JSON API	Flask jsonify()
+Password hashing	generate_password_hash()
+Password verification	check_password_hash()
+Authentication	JWT
+Authorization	Role checking
+SQL injection protection	SQLAlchemy ORM queries
+Password exposure prevention	Password omitted from JSON
+Duplicate account prevention	Unique email
+Protected API	@jwt_required()
